@@ -21,7 +21,7 @@ gamma <-
 epsilon <- 
   diagnostic %>% 
   summarise_all(Mode)  %>%
-  mutate(across(everything(), ~as.character(abs(as.numeric(.)-1)))) %>% 
+  mutate(across(everything(), ~as.character(1-as.numeric(.)))) %>% 
   unlist(., use.names=FALSE) %>% 
   paste0(collapse = "") %>% 
   strtoi(base = 2)
@@ -50,7 +50,7 @@ CO <- diagnostic
 for(i in 1:ncol(diagnostic)){
   if(nrow(CO)==1) {next}
   CO <- 
-    CO[CO[,i]==as.character(abs(as.numeric(Mode(CO[,i]))-1)),]
+    CO[CO[,i]==as.character(1-as.numeric(Mode(CO[,i]))),]
 }
 
 CO_rating <- 
