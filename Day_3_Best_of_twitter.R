@@ -31,3 +31,36 @@ while (nrow(co2) > 1) {
 
 oxy$dec * co2$dec
 
+## Cool one from @TeaStats
+
+# functions
+
+most_common <- function(x) {
+  round(colMeans(x) + 1) - 1
+}
+
+binary_to_int <- function(x) {
+  sum(x * 2 ^ rev(seq_along(x) - 1))
+}
+
+# Part 1
+common <-most_common(input)
+binary_to_int(common) * binary_to_int(!common)
+
+#part 2
+
+power_consumption(input)
+
+oxygen <- co2 <- input  #assigns input to both
+
+for (j in 1:ncol(input)) {
+  if (nrow(oxygen) > 1) {
+    common <- most_common(oxygen)
+    oxygen <- oxygen[oxygen[, j] == common[j], ]
+  }
+  if (nrow(co2) > 1) {
+    common <- most_common(co2)
+    co2 <- co2[co2[, j] != common[j], ]
+  }
+}
+binary_to_int(oxygen) * binary_to_int(co2)
