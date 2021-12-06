@@ -27,6 +27,31 @@ rr <-
 
 sum(table(rr)>1)
 
+
+## From Riinu @_riinu_  ##changed a bit to match mine
+
+unglue_data(input, "{start_x},{start_y} -> {end_x},{end_y}", convert = TRUE) %>% 
+  filter(start_x==end_x | start_y==end_y) %>% 
+  # it's all single rows, but this group_by() is a 'hack' to get a non-vectorised function
+  # - seq() - to work as a vectorized one
+  rowwise() %>% 
+  mutate(x = paste0(seq(start_x, end_x), collapse = ","),
+         y = paste0(seq(start_y, end_y), collapse = ",")) %>% 
+  separate_rows(x, y) %>% 
+  count(x, y) %>% 
+  count(n > 1)
+
+# Part II - code identical to Part I, only removed filter(x1 == x2 | y1 == y2)
+
+unglue_data(input, "{start_x},{start_y} -> {end_x},{end_y}", convert = TRUE) %>% 
+  rowwise() %>% 
+  mutate(x = paste0(seq(start_x, end_x), collapse = ","),
+         y = paste0(seq(start_y, end_y), collapse = ",")) %>% 
+  ungroup() %>% 
+  separate_rows(x, y) %>% 
+  count(x, y) %>% 
+  count(n > 1)
+
 ## From Bob Rudis @hrbrmstr
 library(stringi)
 file <- "./Day_5/Part_1/input.txt"
