@@ -1,3 +1,32 @@
+##From Madhur Parihar @pariharmadhur (edited a bit for myself)
+library(unglue)
+library(tidyverse)
+
+file <- "./Day_5/Part_1/input.txt"
+input <- readLines(file)
+
+# part 1
+
+rr <- 
+  unglue_data(input, "{start_x},{start_y} -> {end_x},{end_y}", convert = TRUE) %>% 
+  filter(start_x==end_x | start_y==end_y) %>%   ##Keep only vert/horiz
+  rowwise() %>% ##used since you want to treat each row as it's own input, not the entire vector??
+  mutate(points = list(paste0(start_x:end_x,"_",start_y:end_y))) %>%  ##creates a "nested df" / column of lists. Later these are just unlisted and counted
+  pull(points) %>% 
+  unlist()
+
+sum(table(rr)>1)
+
+rr <- 
+  unglue_data(input, "{start_x},{start_y} -> {end_x},{end_y}", convert = TRUE) %>% 
+  # filter(start_x==end_x | start_y==end_y) %>%   ##Keep only vert/horiz
+  rowwise() %>% ##used since you want to treat each row as it's own input, not the entire vector??
+  mutate(points = list(paste0(start_x:end_x,"_",start_y:end_y))) %>%  ##creates a "nested df" / column of lists. Later these are just unlisted and counted
+  pull(points) %>% 
+  unlist()
+
+sum(table(rr)>1)
+
 ## From Bob Rudis @hrbrmstr
 library(stringi)
 file <- "./Day_5/Part_1/input.txt"
@@ -116,31 +145,3 @@ for (line in for_part_2) {
 sum(grid>1)
 ## [1] 12
 
-##From Madhur Parihar @pariharmadhur (edited a bit for myself)
-library(unglue)
-library(tidyverse)
-
-file <- "./Day_5/Part_1/input.txt"
-input <- readLines(file)
-
-rr <- 
-  unglue_data(input, "{x1},{y1} -> {x2},{y2}", convert = TRUE) %>%  
-  filter((xl == x2)| (yl == y2)) %>% 
-  rowwise() %>% 
-  mutate(points = list(paste0(xl:x2,"_",y1:y2)))
-
-pull(points)	81%
-16	solidt
-17
-18 ansl = sum(table(rr1)>1)
-19
-20
-21	,2
-22 rrl = rr	61%
-23	er(xl = x2 1 yl = y2)
-24	rowwise()	61%
-25	mutate(points = list(paste0(xl:x2,'_",y1:y2)))	61%
-26	Pull(Points)	61%
-27	unlist
-28
-29 ans2 = sum(table(rr1)>1)
