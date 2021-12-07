@@ -11,7 +11,6 @@ avg <- round(median((readings)))
 sum(abs(readings-avg))
 
 ## Part 2
-result <- list()
 
 nth_triang_num <- function(x){(x^2+x)/2}
 
