@@ -1,3 +1,4 @@
+library(tidyverse)
 
 file <- "./Day_7/Part_1/input.txt"
 readings <- 
