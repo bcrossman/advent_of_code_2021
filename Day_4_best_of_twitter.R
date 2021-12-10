@@ -10,7 +10,7 @@ n_boards <- nrow(boards_raw) / n
 boards <- data.frame(
   num = unlist(boards_raw),  ## so he made it a long vector right away
   board = rep(1:n_boards, each = n),  #then assigned the board an id based on size of board
-  col = rep(rep(1:n, each = n * n_boards)),  ## I feel like I'd not no (without testing) how a dataframe unfurls, like is it by col or row
+  col = rep(rep(1:n, each = n * n_boards)),  ## I feel like I'd not know (without testing) how a dataframe unfurls, like is it by col or row
   row = 1:n)  ##But I should say, in the end this gets to my same board dataframe, which is cool
 
 # the row/line indice is stored in `row` because "reshape"
