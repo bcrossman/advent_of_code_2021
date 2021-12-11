@@ -16,7 +16,7 @@ data <-
 
 total_triggered <- list()
 
-for(i in 1:100){
+for(i in 1:99999){
   # i <- 1
   data$energy <- data$energy+1
   
@@ -63,61 +63,14 @@ for(i in 1:100){
     mutate(energy = if_else(energy>9, 0, energy))
   
   total_triggered[[paste(i,count)]] <- already_triggered
-}  
-flashes <- bind_rows(total_triggered)
-
-flashes %>% 
-  nrow()
-
-
-## Part 2  Basicaly same loop but with a break if we have 100 flashes in step
-for(i in 1:999999){
-  # i <- 1
-  data$energy <- data$energy+1
   
-  triggered <-   
-    data %>% 
-    filter(energy==10)
-  
-  already_triggered <- triggered
-  
-  count <- 0
-  while(nrow(triggered)>0){
-    count <- count+1
-    new_data_list <- list()
+  if(i == 100){
+    flashes <- bind_rows(total_triggered)
     
-    for(j in 1:nrow(triggered)){
-      new_data <- 
-        data %>% 
-        filter(rowid>=(triggered$rowid[j]-1),
-               rowid<=(triggered$rowid[j]+1),
-               colid<=(triggered$colid[j]+1),
-               colid>=(triggered$colid[j]-1)) %>% 
-        mutate(energy = 1)
-      
-      new_data_list[[as.character(j)]] <- new_data
-    }
-    
-    data <- 
-      new_data_list %>% 
-      bind_rows() %>% 
-      bind_rows(data) %>% 
-      group_by(key, rowid, colid) %>% 
-      summarise(energy = sum(energy), .groups = "drop") 
-    
-    triggered <-   
-      data %>% 
-      filter(energy>=10) %>% 
-      anti_join(already_triggered, by = "key")
-    
-    already_triggered <- bind_rows(already_triggered, triggered)
+    flashes %>% 
+      nrow() %>% 
+      print()##Part 1
   }
-  
-  data <- 
-    data %>% 
-    mutate(energy = if_else(energy>9, 0, energy))
-  
-  total_triggered[[paste(i,count)]] <- already_triggered
   
   ##Check if done
   flashes <- bind_rows(total_triggered, .id = "step_count")
@@ -135,4 +88,4 @@ for(i in 1:999999){
   if(check){break}
 }  
 
-i+100 ##since we had already run 100, if you don't run part 1, no need for +100
+i ##Part 2
