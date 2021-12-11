@@ -64,16 +64,17 @@ for(i in 1:99999){
   
   total_triggered[[paste(i,count)]] <- already_triggered
   
+  flashes <- bind_rows(total_triggered, .id = "step_count")
+  
   if(i == 100){
-    flashes <- bind_rows(total_triggered)
+    
     
     flashes %>% 
       nrow() %>% 
       print()##Part 1
   }
   
-  ##Check if done
-  flashes <- bind_rows(total_triggered, .id = "step_count")
+  ##Check if done Part 2
   
   check <- 
     flashes %>% 
