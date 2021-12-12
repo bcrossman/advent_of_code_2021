@@ -21,10 +21,9 @@ current_net <-
   network_data_bi_direct %>% 
   filter(beg == "start")
 
-net_len <- nrow(current_net)
-chg <- 1
+avail_branch = nrow(current_net %>% filter(!(end == "end" | is.na(end))))
 count <- 0
-while(TRUE){
+while(avail_branch>1){
   count <- count+1
   current_net <- 
     current_net %>% 
@@ -48,9 +47,7 @@ while(TRUE){
     ungroup %>% 
     select(-path_id)
   
-  if(nrow(current_net)==
-     nrow(current_net %>% filter(end == "end" | is.na(end)))){break}
-
+  avail_branch = nrow(current_net %>% filter(!(end == "end" | is.na(end))))
 }
 
 nrow(current_net)
@@ -61,10 +58,9 @@ current_net <-
   network_data_bi_direct %>% 
   filter(beg == "start")
 
-net_len <- nrow(current_net)
-chg <- 1
+avail_branch = nrow(current_net %>% filter(!(end == "end" | is.na(end))))
 count <- 0
-while(TRUE){
+while(avail_branch>1){
   count <- count+1
   current_net <- 
     current_net %>% 
@@ -76,24 +72,23 @@ while(TRUE){
     pivot_longer(cols = -path_id, names_to = "node", values_to = "value") %>%
     drop_na(value) %>% 
     mutate(is_upper = (value == toupper(value))) %>% 
-    group_by(path_id, value) %>% 
-    mutate(n = n()) %>% 
-    ungroup() %>% 
-    mutate(is_good = is_upper|(n<=2)) %>% 
+    # group_by(path_id, value) %>% 
+    # mutate(n = n()) %>% 
+    # ungroup() %>% 
+    # mutate(is_good = is_upper|(n<=2)) %>% 
     group_by(path_id, is_upper) %>%
     mutate(n_type = n()) %>% 
     mutate(n_distinct_type = n_distinct(value)) %>% 
     mutate(is_good_type = is_upper| ((n_type-n_distinct_type)<=1)) %>% 
     group_by(path_id) %>% 
-    mutate(path_good = all(is_good)&all(is_good_type)) %>% 
+    mutate(path_good = all(is_good_type)) %>% #all(is_good)& 
     filter(path_good) %>% 
     select(path_id, node, value) %>% 
     pivot_wider(id_cols = path_id, names_from = "node", values_from="value") %>% 
     ungroup %>% 
     select(-path_id)
   
-  if(nrow(current_net)==
-     nrow(current_net %>% filter(end == "end" | is.na(end)))){break}
+  avail_branch = nrow(current_net %>% filter(!(end == "end" | is.na(end))))
   print(count)
 }
 
