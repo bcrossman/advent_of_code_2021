@@ -55,5 +55,7 @@ for(i in 1:nrow(directions)){
   }
 }
 
-  ggplot(data = dots, aes(x = x_coord, y = -y_coord)) + 
-  geom_point()
+ggplot(data = dots, aes(x = x_coord, y = -y_coord)) + 
+  geom_tile() +   ##changed this plot after seeing @_Riinu_
+  coord_fixed()  ##changed this plot after seeing @_Riinu_
+
