@@ -85,3 +85,9 @@ data %>%
   filter(key !="1,1") %>% 
   pull(risk) %>% 
   sum()
+
+
+## This also gives total cost, needed to name the inputs to distances to get it to work.
+## Figured out from @_riinu_
+network_data_full %>% 
+  distances(v = "1,1", to ="500,500", mode = "out") 
