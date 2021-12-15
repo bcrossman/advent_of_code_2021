@@ -46,6 +46,19 @@ pairs_df <-
 
 final_letter <- str_sub(word, -1)
 
+final_count <- 
+  pairs_df %>% 
+  separate(pairs, into = c("first", "second"), sep = 1,remove = T) %>% 
+  pivot_longer(-n, names_to="order", values_to = "Element") %>% 
+  group_by(Element) %>% 
+  summarise(n = sum(n)) %>% 
+  ungroup() %>% 
+  mutate(n = if_else(Element == final_letter, (n+1)/2, n/2)) %>% 
+  arrange(-n) %>% 
+  pull(n) 
+
+(max(final_count)- min(final_count)) %>% as.character()
+
 ## Part 2
 
 pairs_df <- map_df(pairs, ~data.frame("pairs" = .x)) %>% count(pairs)
